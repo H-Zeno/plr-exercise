@@ -5,6 +5,7 @@ INSTALL_REQUIRES = [
     "numpy",
     "torch>=1.21",
 ]
+
 setup(
     name="plr_exercise",
     version="1.0.0",
