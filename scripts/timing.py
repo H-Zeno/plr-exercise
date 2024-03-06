@@ -10,18 +10,16 @@ from pytictac import Timer, CpuTimer
 import time
 
 
-
 def main():
     """
     Main function to time the training and inference of a simple CNN model on MNIST dataset.
-    
+
     The function includes timing of operations on CPU and GPU to showcase performance differences and
     the effect of warm-up on computation times. Training settings are configurable via command-line arguments, including the option
     to disable CUDA for running on CPU only. This script primarily focuses on data loading,
     model initialization, and benchmarking model inference time before and after warm-up
     iterations to understand the performance implications of initial GPU operations.
-    """
-    # Training settings
+    """  # Training settings
     parser = argparse.ArgumentParser(description="PyTorch MNIST Example")
     parser.add_argument(
         "--batch-size", type=int, default=64, metavar="N", help="input batch size for training (default: 64)"
