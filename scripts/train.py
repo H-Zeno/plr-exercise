@@ -7,6 +7,13 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
+import wandb
+
+# start a new wandb run to track the script
+run = wandb.init(project="plr_exercise", job_type="train_and_test_model")
+artifact = wandb.Artifact(name= 'train_source_code', type= 'code', description= 'Training script')
+artifact.add_file('scripts/train.py')
+run.log_artifact(artifact)
 
 
 def train(args, model, device, train_loader, optimizer, epoch):
@@ -19,6 +26,7 @@ def train(args, model, device, train_loader, optimizer, epoch):
         loss = F.nll_loss(output, target)
         loss.backward()
         optimizer.step()
+        wandb.log({"training loss": loss.item()})
         if batch_idx % args.log_interval == 0:
             print(
                 "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
@@ -48,6 +56,7 @@ def test(model, device, test_loader, epoch):
             correct += pred.eq(target.view_as(pred)).sum().item()
 
     test_loss /= len(test_loader.dataset)
+    wandb.log({"test loss": test_loss})
 
     print(
         "\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
