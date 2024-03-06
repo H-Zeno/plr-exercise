@@ -18,6 +18,19 @@ run.log_artifact(artifact)
 
 
 def train(args, model, device, train_loader, optimizer, epoch):
+     """
+    Trains the model for one epoch over the provided training loader.
+
+    Args:
+        args: Command line arguments specifying various training options.
+        model: The neural network model to be trained.
+        device: The device (CPU or CUDA) the training is performed on.
+        train_loader: DataLoader for training data.
+        optimizer: Optimization algorithm.
+        epoch: Current epoch number.
+
+    Prints training progress and logs training loss to wandb.
+    """
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
 
@@ -43,6 +56,18 @@ def train(args, model, device, train_loader, optimizer, epoch):
 
 
 def test(model, device, test_loader, epoch):
+    """
+    Evaluates the model on the test dataset.
+
+    Args:
+        model: The neural network model to be evaluated.
+        device: The device (CPU or CUDA) the evaluation is performed on.
+        test_loader: DataLoader for test data.
+        epoch: Current epoch number (unused in function but could be used for extended logging).
+
+    Returns:
+        test_loss: Average loss of the model on the test dataset.
+    """
     model.eval()
     test_loss = 0
     correct = 0
@@ -67,6 +92,16 @@ def test(model, device, test_loader, epoch):
     return test_loss
 
 def objective(trial):
+    """
+    Objective function for Optuna study to optimize model hyperparameters.
+
+    Args:
+        trial: An Optuna trial object that suggests hyperparameters.
+
+    Returns:
+        test_loss: The loss of the model evaluated on the test dataset, which Optuna seeks to minimize.
+    """
+    # Parses command line arguments (in this context, might be better to pass as function arguments)
     parser = argparse.ArgumentParser(description="PyTorch MNIST Example")
     parser.add_argument(
         "--batch-size", type=int, default=64, metavar="N", help="input batch size for training (default: 64)"
@@ -131,6 +166,8 @@ def objective(trial):
     return test_loss
     
 def main():
+    """Main function to execute training and testing of the model.
+    """
     # Training settings
     parser = argparse.ArgumentParser(description="PyTorch MNIST Example")
     parser.add_argument(
